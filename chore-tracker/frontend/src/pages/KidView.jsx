@@ -16,8 +16,8 @@ export default function KidView() {
 
   const loadData = useCallback(async () => {
     const [choreRes, statsRes] = await Promise.all([
-      fetch(`/api/completions/today/${kidId}`),
-      fetch(`/api/stats/${kidId}`),
+      fetch(`./api/completions/today/${kidId}`),
+      fetch(`./api/stats/${kidId}`),
     ])
     const choreData = await choreRes.json()
     const statsData = await statsRes.json()
@@ -35,7 +35,7 @@ export default function KidView() {
   useEffect(() => { loadData() }, [loadData])
 
   const handleComplete = async (chore) => {
-    await fetch('/api/completions/', {
+    await fetch('./api/completions/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chore_id: chore.chore_id, kid_id: Number(kidId), due_date: today }),

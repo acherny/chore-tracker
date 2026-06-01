@@ -6,7 +6,7 @@ export default function SelectKid() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/kids/').then(r => r.json()).then(setKids)
+    fetch('./api/kids/').then(r => r.json()).then(setKids)
   }, [])
 
   return (

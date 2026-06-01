@@ -55,9 +55,9 @@ function ChoresTab() {
 
   const load = async () => {
     const [c, k, a] = await Promise.all([
-      fetch('/api/chores/').then(r => r.json()),
-      fetch('/api/kids/').then(r => r.json()),
-      fetch('/api/chores/assignments').then(r => r.json()),
+      fetch('./api/chores/').then(r => r.json()),
+      fetch('./api/kids/').then(r => r.json()),
+      fetch('./api/chores/assignments').then(r => r.json()),
     ])
     setChores(c); setKids(k); setAssignments(a)
   }
@@ -69,9 +69,9 @@ function ChoresTab() {
   const toggleAssign = async (choreId, kidId) => {
     const existing = assignments.find(a => a.chore_id === choreId && a.kid_id === kidId)
     if (existing) {
-      await fetch(`/api/chores/assignments/${existing.id}`, { method: 'DELETE' })
+      await fetch(`./api/chores/assignments/${existing.id}`, { method: 'DELETE' })
     } else {
-      await fetch('/api/chores/assignments', {
+      await fetch('./api/chores/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chore_id: choreId, kid_id: kidId }),
@@ -81,7 +81,7 @@ function ChoresTab() {
   }
 
   const toggleActive = async (chore) => {
-    await fetch(`/api/chores/${chore.id}`, {
+    await fetch(`./api/chores/${chore.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ active: !chore.active }),
@@ -91,13 +91,13 @@ function ChoresTab() {
 
   const deleteChore = async (id) => {
     if (!confirm('Delete this chore?')) return
-    await fetch(`/api/chores/${id}`, { method: 'DELETE' })
+    await fetch(`./api/chores/${id}`, { method: 'DELETE' })
     load()
   }
 
   const submitChore = async (e) => {
     e.preventDefault()
-    await fetch('/api/chores/', {
+    await fetch('./api/chores/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -138,7 +138,7 @@ function ChoresTab() {
 
   const submitEdit = async (e, choreId) => {
     e.preventDefault()
-    await fetch(`/api/chores/${choreId}`, {
+    await fetch(`./api/chores/${choreId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editForm),
@@ -296,12 +296,12 @@ function KidsTab({ colors }) {
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ name: '', avatar_color: colors[0], pin: '' })
 
-  const load = () => fetch('/api/kids/').then(r => r.json()).then(setKids)
+  const load = () => fetch('./api/kids/').then(r => r.json()).then(setKids)
   useEffect(() => { load() }, [])
 
   const submit = async (e) => {
     e.preventDefault()
-    await fetch('/api/kids/', {
+    await fetch('./api/kids/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, pin: form.pin || null }),
@@ -313,7 +313,7 @@ function KidsTab({ colors }) {
 
   const deleteKid = async (id) => {
     if (!confirm('Remove this kid? All their chore history will be deleted.')) return
-    await fetch(`/api/kids/${id}`, { method: 'DELETE' })
+    await fetch(`./api/kids/${id}`, { method: 'DELETE' })
     load()
   }
 
@@ -378,16 +378,16 @@ function ReviewTab() {
 
   const load = async () => {
     const [p, k, c] = await Promise.all([
-      fetch('/api/completions/?status=pending').then(r => r.json()),
-      fetch('/api/kids/').then(r => r.json()),
-      fetch('/api/chores/').then(r => r.json()),
+      fetch('./api/completions/?status=pending').then(r => r.json()),
+      fetch('./api/kids/').then(r => r.json()),
+      fetch('./api/chores/').then(r => r.json()),
     ])
     setPending(p); setKids(k); setChores(c)
   }
   useEffect(() => { load() }, [])
 
   const review = async (id, status, notes = null) => {
-    await fetch(`/api/completions/${id}/review`, {
+    await fetch(`./api/completions/${id}/review`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, notes }),
