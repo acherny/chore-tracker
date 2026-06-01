@@ -6,8 +6,13 @@ export default function SelectKid() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('./api/kids/').then(r => r.json()).then(setKids)
-  }, [])
+    fetch('./api/kids/')
+      .then(r => r.json())
+      .then(data => {
+        if (data.length === 0) navigate('/onboarding')
+        else setKids(data)
+      })
+  }, [navigate])
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', gap: '2rem' }}>
