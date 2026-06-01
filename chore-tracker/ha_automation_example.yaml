@@ -1,0 +1,22 @@
+# Add this automation to Home Assistant to make Echo devices
+# announce chore reminders when the app fires them.
+#
+# The app fires a custom event: chore_reminder
+# with data: { "message": "Emma has 3 chores today: ..." }
+
+automation:
+  - alias: "Chore Tracker - Echo Announcement"
+    trigger:
+      - platform: event
+        event_type: chore_reminder
+    action:
+      - service: notify.alexa_media
+        data:
+          message: "{{ trigger.event.data.message }}"
+          data:
+            type: announce
+          # Change this to target specific Echo devices, or use
+          # media_player.everywhere for all of them:
+          target:
+            - media_player.kitchen_echo
+            - media_player.living_room_echo_show
