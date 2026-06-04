@@ -1,6 +1,6 @@
 name: Chore Tracker
 description: Family chore tracking app with gamification for kids
-version: "1.0.4"
+version: "1.0.5"
 slug: chore_tracker
 init: false
 arch:
